@@ -1,40 +1,24 @@
 package org.game.snake;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
-
-//@Controller
-//public class GreetingController {
-//
-//    @GetMapping("/greeting")
-//    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-//        model.addAttribute("name", name);
-//        return "greeting";
-//    }
-//
-//}
-
-@RestController
+@Controller
 public class SnakeController {
-
-    @CrossOrigin(origins = "http://localhost:8080")
-    @GetMapping("/snake")
-    public Field field(@RequestParam(required = false, defaultValue = "9") int col,
-                       @RequestParam(required = false, defaultValue = "9") int row) {
-        System.out.println("==== get greeting ====");
-        return new Field(1, col, row);
+    @RequestMapping(value="/field", method=RequestMethod.GET)
+    public String fieldForm(Model model) {
+        model.addAttribute("field", new Field());
+        return "field";
     }
 
-    @GetMapping("/snake-javaconfig")
-    public Field fieldWithJavaconfig(@RequestParam(required = false, defaultValue = "9") int col,
-                                        @RequestParam(required = false, defaultValue = "9") int row) {
-        System.out.println("==== in greeting ====");
-        return new Field(1, col, row);
+    @RequestMapping(value="/field", method=RequestMethod.POST)
+    public String fieldSubmit(@ModelAttribute Field field, Model model) {
+        model.addAttribute("field", field);
+        return "result";
     }
 
 }
